@@ -26,7 +26,6 @@ class Player:
         if self.alive:
             keys = pygame.key.get_pressed()
 
-            # Gestion du saut
             if keys[self.controls["jump"]] and not self.jump and not self.is_sliding:
                 self.jump = True
                 self.vel_y = self.jump_vel
@@ -38,18 +37,16 @@ class Player:
                     self.rect.y = ground
                     self.jump = False
 
-            # Gestion du slide
-            if keys[self.controls["slide"]] and not self.jump:  # Si la touche slide est enfoncée et pas en train de sauter
-                self.rect.height = slide_height  # Réduit la hauteur pour le slide
-                self.rect.y = self.default_y + (player_height - slide_height)  # Déplace le joueur vers le bas
+            if keys[self.controls["slide"]] and not self.jump:  
+                self.rect.height = slide_height  
+                self.rect.y = self.default_y + (player_height - slide_height)  
                 self.is_sliding = True
             else:
-                if not self.jump:  # Only reset if not jumping
-                    self.rect.height = player_height  # Remet la hauteur originale du joueur
-                    self.rect.y = self.default_y  # Remet le joueur à sa position de départ
+                if not self.jump:  
+                    self.rect.height = player_height  
+                    self.rect.y = self.default_y  
                     self.is_sliding = False
 
-        # Bouclier
         if self.shield:
             self.shield_timer -= 1
             if self.shield_timer <= 0:
@@ -63,7 +60,7 @@ class Player:
     def collect_bonus(self, kind):
         if kind == "shield":
             self.shield = True
-            self.shield_timer = 180  # 3 sec à 60 FPS
+            self.shield_timer = 180 
         elif kind == "weapon":
             self.weapons += 1
         elif kind == "armor":

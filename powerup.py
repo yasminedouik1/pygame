@@ -4,7 +4,7 @@ class PowerUp:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 30, 30)
         self.type = "shield"
-        self.color = (255, 215, 0)  # Couleur dorée
+        self.color = (255, 215, 0)  
 
     def update(self, speed):
         self.rect.x -= speed

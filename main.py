@@ -19,7 +19,7 @@ RED = (255, 0, 0)
 GRAY = (200, 200, 200)
 
 background_image = pygame.image.load("./images/background.png")
-background_rect = background_image.get_rect()  # Get the dimensions of the background image
+background_rect = background_image.get_rect()  
 
 
 font = pygame.font.SysFont("Arial", 24)
@@ -30,31 +30,25 @@ def draw_divider():
     pygame.draw.line(screen, BLACK, (0, screen_height//2), (screen_width, screen_height//2), 3)
 
 def display_game_over(player_scores):
-    screen.blit(background_image, (0, 0))  # Draw the background at the top-left corner
+    screen.blit(background_image, (0, 0))  
 
-    # "Fin du jeu !" title
     text = big_font.render("Fin du jeu !", True, BLACK)
     screen.blit(text, (screen_width // 2 - 120, 50))
 
-    # Create a container for the scores
     score_container_width = 400
     score_container_height = 150
     score_container_x = screen_width // 2 - score_container_width // 2
-    score_container_y = 150  # Starting position of the container
+    score_container_y = 150  
 
-    # Draw the container background (a slightly transparent rectangle)
     pygame.draw.rect(screen, WHITE, (score_container_x, score_container_y, score_container_width, score_container_height), 0)
     pygame.draw.rect(screen, BLACK, (score_container_x, score_container_y, score_container_width, score_container_height), 5)  # Border
 
-    # Score text
     score_text1 = font.render(f"Score Joueur 1 : {player_scores[0]}", True, BLACK)
     score_text2 = font.render(f"Score Joueur 2 : {player_scores[1]}", True, BLACK)
     
-    # Position the score text inside the container with some padding
-    screen.blit(score_text1, (score_container_x + 20, score_container_y + 20))  # Padding from left and top
-    screen.blit(score_text2, (score_container_x + 20, score_container_y + 60))  # Padding from left and below
+    screen.blit(score_text1, (score_container_x + 20, score_container_y + 20))  
+    screen.blit(score_text2, (score_container_x + 20, score_container_y + 60))  
 
-    # Replay prompt text
     replay_text = font.render("Appuyez sur 'R' pour rejouer", True, BLACK)
     screen.blit(replay_text, (screen_width // 2 - 160, 250))
 
@@ -87,20 +81,18 @@ def game_loop():
             player1.update()
             player2.update()
 
-            # Obstacles
             spawn_timer1 += 1
             spawn_timer2 += 1
             if spawn_timer1 > 90 and player1.alive:
-                obstacle_y1 = player1.rect.y + 20  # Position à hauteur du joueur debout
+                obstacle_y1 = player1.rect.y + 20  
                 obstacles1.append(Obstacle(screen_width, obstacle_y1))
                 spawn_timer1 = 0
             if spawn_timer2 > 90 and player2.alive:
-                obstacle_y2 = player2.rect.y + 20  # Pareil pour joueur 2
+                obstacle_y2 = player2.rect.y + 20  
                 obstacles2.append(Obstacle(screen_width, obstacle_y2))
                 spawn_timer2 = 0
 
 
-            # Bonus
             bonus_timer1 -= 1
             bonus_timer2 -= 1
             if bonus_timer1 <= 0:
@@ -115,7 +107,6 @@ def game_loop():
             for b in bonuses1: b.update()
             for b in bonuses2: b.update()
 
-            # Collisions
             for ob in obstacles1:
                 if player1.rect.colliderect(ob.rect) and player1.alive and not player1.shield:
                     player1.alive = False
@@ -123,7 +114,6 @@ def game_loop():
                 if player2.rect.colliderect(ob.rect) and player2.alive and not player2.shield:
                     player2.alive = False
 
-            # Bonus collisions
             for b in bonuses1:
                 if player1.rect.colliderect(b.rect):
                     player1.collect_bonus(b.kind)
@@ -144,13 +134,11 @@ def game_loop():
             for ob in obstacles2: ob.draw(screen)
             for b in bonuses2: b.draw(screen)
 
-            # Affichage score + bonus
             s1 = f"Score: {player1.score} | ⚔️ {player1.weapons} 🛡️ {player1.armors}"
             s2 = f"Score: {player2.score} | ⚔️ {player2.weapons} 🛡️ {player2.armors}"
             screen.blit(font.render(s1, True, BLACK), (10, 10))
             screen.blit(font.render(s2, True, BLACK), (10, screen_height//2 + 10))
 
-            # Game over affiché individuellement
             if not player1.alive:
                 screen.blit(font.render("Game Over", True, RED), (screen_width - 200, 10))
             if not player2.alive:
