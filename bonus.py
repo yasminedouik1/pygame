@@ -2,13 +2,14 @@ import pygame
 import random
 
 bonus_size = (50, 50)
+money_size = (20, 20)
 bonus_speed = 5
-bonus_types = ["shield", "weapon", "armor"]
+bonus_types = ["shield", "weapon", "money"]
 
 images = {
     "shield": pygame.transform.scale(pygame.image.load("./images/shield.png"), bonus_size),
-    "weapon": pygame.transform.scale(pygame.image.load("./images/weapon.jpg"), bonus_size),
-    "armor": pygame.transform.scale(pygame.image.load("./images/armor.png"), bonus_size),
+    "weapon": pygame.transform.scale(pygame.image.load("./images/weapon.png"), bonus_size),
+    "money": pygame.transform.scale(pygame.image.load("./images/money.png"), money_size),
 }
 
 class Bonus:
