@@ -2,7 +2,7 @@ import pygame
 
 class PowerUp:
     def __init__(self, x, y):
-        self.rect = pygame.Rect(x, y, 30, 30)
+        self.rect = pygame.Rect(x, y, 50, 50)
         self.type = "shield"
         self.color = (255, 215, 0)  
 
