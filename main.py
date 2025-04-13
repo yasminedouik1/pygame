@@ -22,8 +22,7 @@ weapon_image = pygame.transform.scale(pygame.image.load("./images/weapon.png"), 
 money_image = pygame.transform.scale(pygame.image.load("./images/money.png"), (20, 20))
 
 
-font = pygame.font.SysFont("poppins", 24)
-big_font = pygame.font.SysFont("poppins", 50)
+font = pygame.font.SysFont("poppins", 21)
 clock = pygame.time.Clock()
 
 def draw_divider():
@@ -36,17 +35,15 @@ game_over_background = pygame.transform.scale(game_over_background, (800, 600)) 
 def display_game_over(player_scores, player_weapons, player_money):
    
     screen.blit(game_over_background, (0, 0)) 
-
    
     score_text1 = font.render(f"Score Player 1: {player_scores[0]} | {player_weapons[0]} | {player_money[0]}", True, BLACK)
     score_text2 = font.render(f"Score Player 2: {player_scores[1]} | {player_weapons[1]} | {player_money[1]}", True, BLACK)
 
-    screen.blit(score_text1, (295, 250))
-    screen.blit(score_text2, (295, 315))
-
+    screen.blit(score_text1, (265, 240))
+    screen.blit(score_text2, (265, 305))
 
     replay_text = font.render("Press 'R' to Replay", True, BLACK)
-    screen.blit(replay_text,(336, 420))
+    screen.blit(replay_text,(300, 410))
 
     pygame.display.flip()  
 
