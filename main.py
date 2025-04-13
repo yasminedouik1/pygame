@@ -18,38 +18,50 @@ RED = (255, 0, 0)
 background_image = pygame.image.load("./images/background.png")
 background_rect = background_image.get_rect()
 
-weapon_image = pygame.transform.scale(pygame.image.load("./images/weapon.jpg"), (20, 20))
-armor_image = pygame.transform.scale(pygame.image.load("./images/armor.png"), (20, 20))
+weapon_image = pygame.transform.scale(pygame.image.load("./images/weapon.png"), (20, 20))
+money_image = pygame.transform.scale(pygame.image.load("./images/money.png"), (20, 20))
 
 
-font = pygame.font.SysFont("Arial", 24)
-big_font = pygame.font.SysFont("Arial", 50)
+font = pygame.font.SysFont("poppins", 24)
+big_font = pygame.font.SysFont("poppins", 50)
 clock = pygame.time.Clock()
 
 def draw_divider():
-    pygame.draw.line(screen, BLACK, (0, screen_height // 2), (screen_width, screen_height // 2), 3)
+    pygame.draw.line(screen, BLACK, (0, screen_height // 2), (screen_width, screen_height // 2), 2)
 
-def display_game_over(player_scores , player_weapons, player_armors):
-    screen.blit(background_image, (0, 0))
-    text = big_font.render("Fin du jeu !", True, BLACK)
-    screen.blit(text, (screen_width // 2 - 120, 50))
 
-    pygame.draw.rect(screen, WHITE, (200, 150, 400, 150))
-    pygame.draw.rect(screen, BLACK, (200, 150, 400, 150), 5)
+game_over_background = pygame.image.load("./images/game over.jpg")
+game_over_background = pygame.transform.scale(game_over_background, (800, 600))  # Scale to fit the screen size
 
-    score_text1 = font.render(f"Score Joueur 1 : {player_scores[0]} |  {player_weapons[0]}  {player_armors[0]}", True, BLACK)
-    score_text2 = font.render(f"Score Joueur 2 : {player_scores[1]} |  {player_weapons[1]}  {player_armors[1]}", True, BLACK)
-    screen.blit(score_text1, (220, 170))
-    screen.blit(score_text2, (220, 210))
+def display_game_over(player_scores, player_weapons, player_money):
+   
+    screen.blit(game_over_background, (0, 0)) 
 
-    replay_text = font.render("Appuyez sur 'R' pour rejouer", True, BLACK)
-    screen.blit(replay_text, (screen_width // 2 - 160, 250))
+   
+    score_text1 = font.render(f"Score Player 1: {player_scores[0]} | {player_weapons[0]} | {player_money[0]}", True, BLACK)
+    score_text2 = font.render(f"Score Player 2: {player_scores[1]} | {player_weapons[1]} | {player_money[1]}", True, BLACK)
 
-    pygame.display.flip()
+    screen.blit(score_text1, (295, 250))
+    screen.blit(score_text2, (295, 315))
+
+
+    replay_text = font.render("Press 'R' to Replay", True, BLACK)
+    screen.blit(replay_text,(336, 420))
+
+    pygame.display.flip()  
+
 
 def game_loop():
-    player1 = Player(100, 200, 0, {"jump": pygame.K_w, "slide": pygame.K_s}, "./images/player1.png")
-    player2 = Player(100, 500, screen_height//2, {"jump": pygame.K_UP, "slide": pygame.K_DOWN}, "./images/player2.png")
+ 
+    GROUND_OFFSET = 160 
+    top_zone_top = 0      
+    bottom_zone_top = top_zone_top + GROUND_OFFSET + 120  
+    player1 = Player(100, top_zone_top + GROUND_OFFSET, top_zone_top, 
+                    {"jump": pygame.K_w, "slide": pygame.K_s}, 
+                    "./images/player1.png")
+    player2 = Player(100, bottom_zone_top + GROUND_OFFSET, bottom_zone_top, 
+                    {"jump": pygame.K_UP, "slide": pygame.K_DOWN}, 
+                    "./images/player2.png")
     
     obstacles1, obstacles2 = [], []
     bonuses1, bonuses2 = [], []
@@ -62,14 +74,12 @@ def game_loop():
     final_screen = False
 
     while run:
-        clock.tick(60)
+        clock.tick(65)
         screen.blit(background_image, (0, 0))
         draw_divider()
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-
         if not final_screen:
             player1.update()
             player2.update()
@@ -82,9 +92,9 @@ def game_loop():
             if spawn_timer2 > 90 and player2.alive:
                 obstacles2.append(Obstacle(screen_width, player2.rect.y + 20))
                 spawn_timer2 = 0
-
             bonus_timer1 -= 1
             bonus_timer2 -= 1
+            
             if bonus_timer1 <= 0:
                 bonuses1.append(Bonus(screen_width, random.randint(screen_height//2 - 170, screen_height//2 - 100)))
                 bonus_timer1 = random.randint(300, 400)
@@ -92,6 +102,7 @@ def game_loop():
                 bonuses2.append(Bonus(screen_width, random.randint(screen_height - 170, screen_height - 100)))
                 bonus_timer2 = random.randint(300, 400)
 
+            
             for ob in obstacles1: ob.update()
             for ob in obstacles2: ob.update()
             for b in bonuses1: b.update()
@@ -103,7 +114,7 @@ def game_loop():
             for ob in obstacles2:
                 if player2.rect.colliderect(ob.rect) and player2.alive and not player2.shield:
                     player2.alive = False
-
+            
             for b in bonuses1:
                 if player1.rect.colliderect(b.rect):
                     player1.collect_bonus(b.kind)
@@ -112,7 +123,6 @@ def game_loop():
                 if player2.rect.colliderect(b.rect):
                     player2.collect_bonus(b.kind)
                     bonuses2.remove(b)
-
             if player1.alive: player1.score += 1
             if player2.alive: player2.score += 1
 
@@ -124,11 +134,10 @@ def game_loop():
             for ob in obstacles2: ob.draw(screen)
             for b in bonuses2: b.draw(screen)
 
-            s1 = f"Score: {player1.score} | ⚔️ {player1.weapons} 🛡️ {player1.armors}"
-            s2 = f"Score: {player2.score} | ⚔️ {player2.weapons} 🛡️ {player2.armors}"
+            s1 = f"Score: {player1.score} | weapons : {player1.weapons} shields : {player1.money}"
+            s2 = f"Score: {player2.score} | weapons : {player2.weapons} shields : {player2.money}"
             screen.blit(font.render(s1, True, BLACK), (10, 10))
             screen.blit(font.render(s2, True, BLACK), (10, screen_height//2 + 10))
-
             if not player1.alive:
                 screen.blit(font.render("Game Over", True, RED), (screen_width - 200, 10))
             if not player2.alive:
@@ -139,7 +148,7 @@ def game_loop():
 
             pygame.display.flip()
         else:
-            display_game_over((player1.score, player2.score), (player1.weapons, player2.weapons), (player1.armors, player2.armors))
+            display_game_over((player1.score, player2.score), (player1.weapons, player2.weapons), (player1.money, player2.money))
             keys = pygame.key.get_pressed()
             if keys[pygame.K_r]:
                 game_loop()
@@ -147,4 +156,4 @@ def game_loop():
     pygame.quit()
     sys.exit()
 
-game_loop()
+
