@@ -6,6 +6,7 @@ from obstacle import Obstacle
 from bonus import Bonus
 
 pygame.init()
+pygame.mixer.init() 
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -17,6 +18,9 @@ RED = (255, 0, 0)
 
 background_image = pygame.image.load("./images/background.png")
 background_rect = background_image.get_rect()
+
+pygame.mixer.music.load("./sounds/background.mp3")  
+pygame.mixer.music.play(-1)
 
 weapon_image = pygame.transform.scale(pygame.image.load("./images/weapon.png"), (20, 20))
 money_image = pygame.transform.scale(pygame.image.load("./images/money.png"), (20, 20))
