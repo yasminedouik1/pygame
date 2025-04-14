@@ -2,7 +2,7 @@ import pygame
 import sys
 import os
 
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 from main import game_loop 
 
