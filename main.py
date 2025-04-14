@@ -22,7 +22,7 @@ weapon_image = pygame.transform.scale(pygame.image.load("./images/weapon.png"), 
 money_image = pygame.transform.scale(pygame.image.load("./images/money.png"), (20, 20))
 
 
-font = pygame.font.SysFont("poppins", 21)
+font = pygame.font.SysFont("poppins", 21, bold=True)
 clock = pygame.time.Clock()
 
 def draw_divider():
@@ -131,8 +131,8 @@ def game_loop():
             for ob in obstacles2: ob.draw(screen)
             for b in bonuses2: b.draw(screen)
 
-            s1 = f"Score: {player1.score} | weapons : {player1.weapons} shields : {player1.money}"
-            s2 = f"Score: {player2.score} | weapons : {player2.weapons} shields : {player2.money}"
+            s1 = f"Score: {player1.score} | Weapons : {player1.weapons} Money : {player1.money}"
+            s2 = f"Score: {player2.score} | Weapons : {player2.weapons} Money : {player2.money}"
             screen.blit(font.render(s1, True, BLACK), (10, 10))
             screen.blit(font.render(s2, True, BLACK), (10, screen_height//2 + 10))
             if not player1.alive:

@@ -2,7 +2,7 @@ import pygame
 import random
 
 bonus_size = (50, 50)
-money_size = (20, 20)
+money_size = (25, 25)
 bonus_speed = 5
 bonus_types = ["shield", "weapon", "money"]
 
