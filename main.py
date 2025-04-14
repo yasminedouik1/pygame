@@ -19,6 +19,7 @@ RED = (255, 0, 0)
 background_image = pygame.image.load("./images/background.png")
 background_rect = background_image.get_rect()
 
+
 pygame.mixer.music.load("./sounds/background.mp3")  
 pygame.mixer.music.play(-1)
 

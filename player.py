@@ -3,6 +3,10 @@ player_width = 90
 player_height = 90
 slide_height = 60
 
+pygame.init()
+pygame.mixer.init() 
+jump_sound = pygame.mixer.Sound("./sounds/jump.wav")
+
 class Player:
     def __init__(self, x, y, zone_top, controls, image_base_path):
         self.default_y = y
@@ -62,6 +66,7 @@ class Player:
             if keys[self.controls["jump"]] and not self.jump and not self.is_sliding:
                 self.jump = True
                 self.vel_y = self.jump_vel #jump_vel mdeclarya fil constructeur -18 
+                jump_sound.play()
             if self.jump:
                 self.rect.y += self.vel_y
                 self.vel_y += 1
