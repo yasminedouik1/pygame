@@ -4,7 +4,7 @@ from main import game_loop
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Dash and Crash")
+pygame.display.set_caption("Dash & Crash")
 font = pygame.font.SysFont("poppins", 24)
 
 background_image = pygame.image.load("./images/landing.jpg")
