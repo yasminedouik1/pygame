@@ -1,5 +1,4 @@
 import pygame
-
 player_width = 90
 player_height = 90
 slide_height = 60

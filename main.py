@@ -30,7 +30,7 @@ def draw_divider():
 
 
 game_over_background = pygame.image.load("./images/game over.jpg")
-game_over_background = pygame.transform.scale(game_over_background, (800, 600))  # Scale to fit the screen size
+game_over_background = pygame.transform.scale(game_over_background, (800, 600)) 
 
 def display_game_over(player_scores, player_weapons, player_money):
    
